@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
 public class Limpieza {
 
 	public static void mostrarMenuLimpieza() {
-		String[] opciones = { "Pedidos de limpieza", 
-				"Marcar como en limpieza", 
-				"Marcar habitación como limpia", 
-				"Ver habitaciones por estado", 
+		String[] opciones = { "Pedidos de limpieza", // habitaciones en 'limpiar'
+				"Marcar como en limpieza", // cambiar 'limpiar' → 'limpiando'
+				"Marcar habitación como limpia", // cambiar 'limpiando' → 'limpia'
+				"Ver habitaciones por estado", // mostrar todas las habitaciones y su estado de limpieza
 				"Cerrar" };
 		int opcion;
 
@@ -27,7 +27,7 @@ public class Limpieza {
 		} while (opcion != 4);
 	}
 
-	// Mostrar habitaciones pendientes de limpieza 
+	// Mostrar habitaciones pendientes de limpieza (estadoLimpieza='limpiar')
 	private static void mostrarPedidosLimpieza() {
 		Connection conn = conexionBD.conectar();
 		if (conn == null) {
@@ -61,13 +61,14 @@ public class Limpieza {
 		}
 	}
 
-	// Cambiar estado a limpiando
+	// Cambiar estado de limpieza: 'limpiar' → 'limpiando'
 	private static void marcarHabitacionComoEnProceso() {
 		Connection conn = conexionBD.conectar();
 		if (conn == null)
 			return;
 
 		try {
+			// Primero mostramos las habitaciones en 'limpiar'
 			String sql = "SELECT idHabitacion, tipo FROM habitacion WHERE estadoLimpieza='limpiar'";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
@@ -111,7 +112,7 @@ public class Limpieza {
 		}
 	}
 
-	// Cambiar estado a limpia
+	// Cambiar estado de limpieza: 'limpiando' → 'limpia'
 	private static void marcarHabitacionComoLimpia() {
 		Connection conn = conexionBD.conectar();
 		if (conn == null)
@@ -176,7 +177,7 @@ public class Limpieza {
 			while (rs.next()) {
 				habitaciones.append("ID: ").append(rs.getInt("idHabitacion")).append(" - Tipo: ")
 						.append(rs.getString("tipo")).append(" - Estado: ").append(rs.getString("estado"))
-						.append(" - Estado limpieza: ").append(rs.getString("estadoLimpieza")).append("\n");
+						.append(" - Limpieza: ").append(rs.getString("estadoLimpieza")).append("\n");
 			}
 
 			JOptionPane.showMessageDialog(null,
