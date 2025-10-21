@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2025 a las 06:55:05
+-- Tiempo de generación: 21-10-2025 a las 15:44:57
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -101,18 +101,19 @@ CREATE TABLE `habitacion` (
   `idHabitacion` int(11) NOT NULL,
   `tipo` enum('Simple','Doble','Suite') NOT NULL,
   `estado` enum('libre','ocupada') NOT NULL DEFAULT 'libre',
-  `estadoLimpieza` enum('limpia','limpiando','limpiar') NOT NULL DEFAULT 'limpiar'
+  `estadoLimpieza` enum('limpia','limpiando','limpiar') NOT NULL DEFAULT 'limpiar',
+  `precio` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `habitacion`
 --
 
-INSERT INTO `habitacion` (`idHabitacion`, `tipo`, `estado`, `estadoLimpieza`) VALUES
-(1, 'Simple', 'libre', 'limpia'),
-(2, 'Doble', 'libre', 'limpia'),
-(3, 'Suite', 'ocupada', 'limpia'),
-(4, 'Doble', 'ocupada', 'limpia');
+INSERT INTO `habitacion` (`idHabitacion`, `tipo`, `estado`, `estadoLimpieza`, `precio`) VALUES
+(1, 'Simple', 'libre', 'limpia', 200),
+(2, 'Doble', 'libre', 'limpia', 350),
+(3, 'Suite', 'ocupada', 'limpia', 500),
+(4, 'Doble', 'ocupada', 'limpia', 350);
 
 -- --------------------------------------------------------
 
@@ -204,9 +205,9 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `nombre`, `usuario`, `contrasena`, `rol`) VALUES
-(1, 'Ana López', 'alopez', 'hash$demo', 'Recepcion'),
-(2, 'Juan Pérez', 'jperez', 'hash$demo', 'Administrador'),
-(3, 'Carla Romero', 'cromero', 'hash$demo', 'Limpieza');
+(1, 'Ana López', 'alopez', 'lopez', 'Recepcion'),
+(2, 'Juan Pérez', 'jperez', 'perez', 'Administrador'),
+(3, 'Carla Romero', 'cromero', 'romero', 'Limpieza');
 
 --
 -- Índices para tablas volcadas
@@ -293,7 +294,7 @@ ALTER TABLE `factura`
 -- AUTO_INCREMENT de la tabla `habitacion`
 --
 ALTER TABLE `habitacion`
-  MODIFY `idHabitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idHabitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `huesped`
@@ -317,7 +318,7 @@ ALTER TABLE `reserva`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
