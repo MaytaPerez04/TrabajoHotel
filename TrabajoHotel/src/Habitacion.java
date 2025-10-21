@@ -3,18 +3,42 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Habitacion {
-	Connection conn = conexionBD.conectar();
-	public int idHabitacion;
-	public Enum tipoHabitacion;
-	public Enum estadoHabitacion;
+	// Enum interno para tipo de habitación
+	public enum TipoHabitacion {
+		SIMPLE(1), DOBLE(2), SUITE(4);
 
-	public Habitacion(int idHabitacion, Enum tipoHabitacion, Enum estadoHabitacion) {
-		super();
+		private final int capacidad;
+
+		TipoHabitacion(int capacidad) {
+			this.capacidad = capacidad;
+		}
+
+		public int getCapacidad() {
+			return capacidad;
+		}
+	}
+
+	// Enum interno para estado de habitación
+	public enum EstadoHabitacion {
+		LIBRE, OCUPADA
+	}
+
+	private int idHabitacion;
+	private TipoHabitacion tipoHabitacion;
+	private EstadoHabitacion estadoHabitacion;
+	private double precio;
+	private String estadoLimpieza; // Nuevo campo para reflejar la tabla
+
+	public Habitacion(int idHabitacion, TipoHabitacion tipoHabitacion, EstadoHabitacion estadoHabitacion, double precio,
+			String estadoLimpieza) {
 		this.idHabitacion = idHabitacion;
 		this.tipoHabitacion = tipoHabitacion;
 		this.estadoHabitacion = estadoHabitacion;
+		this.precio = precio;
+		this.estadoLimpieza = estadoLimpieza;
 	}
 
+	// Getters y setters
 	public int getIdHabitacion() {
 		return idHabitacion;
 	}
@@ -23,29 +47,52 @@ public class Habitacion {
 		this.idHabitacion = idHabitacion;
 	}
 
-	public Enum getTipoHabitacion() {
+	public TipoHabitacion getTipoHabitacion() {
 		return tipoHabitacion;
 	}
 
-	public void setTipoHabitacion(Enum tipoHabitacion) {
+	public void setTipoHabitacion(TipoHabitacion tipoHabitacion) {
 		this.tipoHabitacion = tipoHabitacion;
 	}
 
-	public Enum getEstadoHabitacion() {
+	public EstadoHabitacion getEstadoHabitacion() {
 		return estadoHabitacion;
 	}
 
-	public void setEstadoHabitacion(Enum estadoHabitacion) {
+	public void setEstadoHabitacion(EstadoHabitacion estadoHabitacion) {
 		this.estadoHabitacion = estadoHabitacion;
 	}
 
-	public void liberaHabitacion(int idHabitacion) throws SQLException {
-		String sql = "UPDATE habitacion SET estado = ? WHERE idHabitacion = ?";
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public String getEstadoLimpieza() {
+		return estadoLimpieza;
+	}
+
+	public void setEstadoLimpieza(String estadoLimpieza) {
+		this.estadoLimpieza = estadoLimpieza;
+	}
+
+	// Método para liberar habitación
+	public void liberaHabitacion(Connection conn) throws SQLException {
+		String sql = "UPDATE habitacion SET estado = ?, estadoLimpieza = ? WHERE idHabitacion = ?";
 		try (PreparedStatement ps = conn.prepareStatement(sql)) {
-			ps.setString(1, "Libre");
-			ps.setInt(2, idHabitacion);
+			ps.setString(1, EstadoHabitacion.LIBRE.toString());
+			ps.setString(2, "limpia");
+			ps.setInt(3, idHabitacion);
 			ps.executeUpdate();
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Habitación " + idHabitacion + " | Tipo: " + tipoHabitacion + " | Precio: $" + precio + " | Estado: "
+				+ estadoHabitacion + " | Estado Limpieza: " + estadoLimpieza;
+	}
 }

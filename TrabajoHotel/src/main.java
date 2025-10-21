@@ -14,7 +14,7 @@ public class main {
             Usuario usuario = Login.iniciarSesion();
             if (usuario != null) {
                 // Llama a los menús según rol y muestra un único mensaje de bienvenida
-                Hotelgama.mostrarMenuSegunRol(usuario);
+                Hotelgama.mostrarMenuSegunRol(usuario, null);
             } else {
                 JOptionPane.showMessageDialog(null, "No se pudo iniciar sesión.");
             }
