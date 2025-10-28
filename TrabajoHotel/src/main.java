@@ -1,24 +1,42 @@
 import javax.swing.JOptionPane;
 
 public class main {
-    public static void main(String[] args) {
-        String[] opc1 = { "Quiero hacer una reserva", "Iniciar Sesión" };
-        int res1 = JOptionPane.showOptionDialog(null, "¿Qué desea hacer?", "Hotelgama", JOptionPane.DEFAULT_OPTION,
-                JOptionPane.INFORMATION_MESSAGE, null, opc1, opc1[0]);
+	public static void main(String[] args) {
+		
+		String[] opciones = { "Quiero hacer una reserva", "Iniciar sesión", "Cerrar" };
 
-        if (res1 == 0) {
-            // Lógica de reservas individuales
-            Reserva.crearReservaIndividual();
-        } else if (res1 == 1) {
-            // Lógica de login
-            Usuario usuario = Login.iniciarSesion();
-            if (usuario != null) {
-                // Llama a los menús según rol y muestra un único mensaje de bienvenida
-                Hotelgama.mostrarMenuSegunRol(usuario, null);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo iniciar sesión.");
-            }
-        }
-    }
+		int seleccion = JOptionPane.showOptionDialog(null, "¿Qué desea hacer?", "HotelGama", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+        
+		switch (seleccion) {
+		case 0:
+			// Entra a reservas
+			Reserva.crearReservaIndividual();
+			break;
+
+		case 1:
+			// Inicia sesión
+			Usuario usuario = Login.iniciarSesion();
+			if (usuario != null) {
+				Hotelgama.mostrarMenuSegunRol(usuario, null);
+			} else {
+				JOptionPane.showMessageDialog(null, "No se pudo iniciar sesión.", "HotelGama",
+						JOptionPane.WARNING_MESSAGE);
+			}
+			break;
+
+		case 2: // Cerrar
+		case JOptionPane.CLOSED_OPTION:
+			JOptionPane.showMessageDialog(null, "Gracias por usar el sistema. ¡Hasta pronto!");
+			System.exit(0);
+			break;
+
+		default:
+			JOptionPane.showMessageDialog(null, "Programa cerrado.");
+			System.exit(0);
+			break;
+		}
+	}
 }
+
 
