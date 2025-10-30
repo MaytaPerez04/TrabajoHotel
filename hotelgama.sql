@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-10-2025 a las 15:44:57
+-- Tiempo de generación: 30-10-2025 a las 20:19:31
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.1.25
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -102,7 +102,7 @@ CREATE TABLE `habitacion` (
   `tipo` enum('Simple','Doble','Suite') NOT NULL,
   `estado` enum('libre','ocupada') NOT NULL DEFAULT 'libre',
   `estadoLimpieza` enum('limpia','limpiando','limpiar') NOT NULL DEFAULT 'limpiar',
-  `precio` double DEFAULT NULL
+  `precio` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -110,10 +110,26 @@ CREATE TABLE `habitacion` (
 --
 
 INSERT INTO `habitacion` (`idHabitacion`, `tipo`, `estado`, `estadoLimpieza`, `precio`) VALUES
-(1, 'Simple', 'libre', 'limpia', 200),
-(2, 'Doble', 'libre', 'limpia', 350),
+(1, 'Simple', 'ocupada', 'limpia', 200),
+(2, 'Doble', 'ocupada', 'limpia', 350),
 (3, 'Suite', 'ocupada', 'limpia', 500),
-(4, 'Doble', 'ocupada', 'limpia', 350);
+(4, 'Doble', 'ocupada', 'limpia', 350),
+(5, 'Simple', 'libre', 'limpia', 200),
+(6, 'Simple', 'libre', 'limpia', 200),
+(7, 'Simple', 'libre', 'limpia', 200),
+(8, 'Simple', 'libre', 'limpia', 200),
+(9, 'Doble', 'libre', 'limpia', 350),
+(10, 'Doble', 'libre', 'limpia', 350),
+(11, 'Doble', 'libre', 'limpia', 350),
+(12, 'Doble', 'libre', 'limpia', 350),
+(13, 'Suite', 'libre', 'limpia', 500),
+(14, 'Suite', 'libre', 'limpia', 500),
+(15, 'Suite', 'libre', 'limpia', 500),
+(16, 'Suite', 'libre', 'limpia', 500),
+(17, 'Simple', 'libre', 'limpia', 200),
+(18, 'Doble', 'libre', 'limpia', 350),
+(19, 'Simple', 'libre', 'limpia', 200),
+(20, 'Doble', 'libre', 'limpia', 350);
 
 -- --------------------------------------------------------
 
@@ -125,18 +141,19 @@ CREATE TABLE `huesped` (
   `idHuesped` int(11) NOT NULL,
   `nombre` varchar(120) NOT NULL,
   `tit_res` varchar(120) DEFAULT NULL,
-  `documento` varchar(50) NOT NULL
+  `tipo_identificacion` enum('DNI','Pasaporte') NOT NULL,
+  `num_identificacion` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `huesped`
 --
 
-INSERT INTO `huesped` (`idHuesped`, `nombre`, `tit_res`, `documento`) VALUES
-(1, 'María González', 'Titular', 'DNI 32111222'),
-(2, 'Pedro Sánchez', NULL, 'DNI 30123456'),
-(3, 'Lucía Fernández', NULL, 'PAS 9A3321'),
-(4, 'Bruno Castro', 'Titular', 'DNI 29111222');
+INSERT INTO `huesped` (`idHuesped`, `nombre`, `tit_res`, `tipo_identificacion`, `num_identificacion`) VALUES
+(1, 'María González', 'Titular', 'DNI', ''),
+(2, 'Pedro Sánchez', NULL, 'DNI', ''),
+(3, 'Lucía Fernández', NULL, 'DNI', ''),
+(4, 'Bruno Castro', 'Titular', 'DNI', '');
 
 -- --------------------------------------------------------
 
@@ -170,7 +187,7 @@ CREATE TABLE `reserva` (
   `idReserva` int(11) NOT NULL,
   `fecha_ini_res` date NOT NULL,
   `fecha_fin_res` date NOT NULL,
-  `tipo` varchar(40) NOT NULL,
+  `tipo` enum('Individuo','Delegación') NOT NULL,
   `fk_idHuesped` int(11) NOT NULL,
   `fk_idDelegacion` int(11) DEFAULT NULL,
   `fk_idHabitacion` int(11) DEFAULT NULL
@@ -181,10 +198,10 @@ CREATE TABLE `reserva` (
 --
 
 INSERT INTO `reserva` (`idReserva`, `fecha_ini_res`, `fecha_fin_res`, `tipo`, `fk_idHuesped`, `fk_idDelegacion`, `fk_idHabitacion`) VALUES
-(1, '2025-09-10', '2025-09-12', 'Individual', 1, NULL, 1),
-(2, '2025-09-10', '2025-09-15', 'Grupo', 2, 1, 2),
-(3, '2025-09-11', '2025-09-13', 'Individual', 3, NULL, NULL),
-(4, '2025-09-12', '2025-09-14', 'Grupo', 4, 2, 4);
+(1, '2025-09-10', '2025-09-12', 'Delegación', 1, NULL, 1),
+(2, '2025-09-10', '2025-09-15', '', 2, 1, 2),
+(3, '2025-09-11', '2025-09-13', '', 3, NULL, NULL),
+(4, '2025-09-12', '2025-09-14', '', 4, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -294,13 +311,13 @@ ALTER TABLE `factura`
 -- AUTO_INCREMENT de la tabla `habitacion`
 --
 ALTER TABLE `habitacion`
-  MODIFY `idHabitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idHabitacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `huesped`
 --
 ALTER TABLE `huesped`
-  MODIFY `idHuesped` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idHuesped` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
@@ -312,7 +329,7 @@ ALTER TABLE `producto`
 -- AUTO_INCREMENT de la tabla `reserva`
 --
 ALTER TABLE `reserva`
-  MODIFY `idReserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idReserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
