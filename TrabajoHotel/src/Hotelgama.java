@@ -8,7 +8,7 @@ public class Hotelgama {
 
 		if (rol.equalsIgnoreCase("Recepcion")) {
 			JOptionPane.showMessageDialog(null, "¡Bienvenido/a al sistema de Recepción, " + u.getNombre() + "!");
-			JOptionPane.showMessageDialog(null, "Menú de Recepción aún no implementado");
+			Recepcion.mostrarMenuRecepcion(); 
 		} else if (rol.equalsIgnoreCase("Limpieza")) {
 			JOptionPane.showMessageDialog(null, "¡Bienvenido/a al sistema de Limpieza, " + u.getNombre() + "!");
 			Limpieza.mostrarMenuLimpieza();
