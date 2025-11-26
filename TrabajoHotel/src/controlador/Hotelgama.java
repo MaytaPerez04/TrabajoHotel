@@ -4,6 +4,7 @@ import Recepcion.RecepcionFrame;
 
 import javax.swing.*;
 
+import Limpieza.LimpiezaFrame;
 import modelo.Administrador;
 import modelo.Usuario;
 
@@ -19,7 +20,7 @@ public class Hotelgama {
 		if (rol.equalsIgnoreCase("Recepcion")) {
 			new RecepcionFrame(); // abre el JFrame con el menú de recepción
 		} else if (rol.equalsIgnoreCase("Limpieza")) {
-			Limpieza.mostrarMenuLimpieza();
+			new LimpiezaFrame(); // abre el JFrame con el menú de limpieza
 
 		} else if (rol.equalsIgnoreCase("Administrador")) {
 			Administrador.mostrarMenuAdministrador(u);
